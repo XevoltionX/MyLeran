@@ -163,10 +163,99 @@ synchronized属于不可中断锁，`ReentrantLock` 就属于是可中断锁。
 
 ## 线程池
 
+![image-20250828031725996](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20250828031725996.png)
+
+### 线程池的优点：
+
+线程重复利用降低了创建销毁线程的资源消耗
+
+响应速度提高
+
+线程好管理可以配置各种数（核心线程数、最大线程数.....）
+
+### 不使用内置线程池/不使用Executors
+
+CachedThreadPool、FixedThreadPool和SingleThreadExecutor默认任务最大长度最大21亿，会OOM
+
+SingleThreadScheduledExecutor和ScheduledThreadPool也是
+
+### 常见参数（我直接复制粘贴）
+
+`ThreadPoolExecutor` 3 个最重要的参数：
+
+- `corePoolSize` : 任务队列未达到队列容量时，最大可以同时运行的线程数量。
+- `maximumPoolSize` : 任务队列中存放的任务达到队列容量的时候，当前可以同时运行的线程数量变为最大线程数。
+- `workQueue`: 新任务来的时候会先判断当前运行的线程数量是否达到核心线程数，如果达到的话，新任务就会被存放在队列中。
+
+`ThreadPoolExecutor`其他常见参数 :
+
+- `keepAliveTime`:当线程池中的线程数量大于 `corePoolSize` ，即有非核心线程（线程池中核心线程以外的线程）时，这些非核心线程空闲后不会立即销毁，而是会等待，直到等待的时间超过了 `keepAliveTime`才会被回收销毁。
+- `unit` : `keepAliveTime` 参数的时间单位。
+- `threadFactory` :executor 创建新线程的时候会用到。
+- `handler` :拒绝策略（后面会单独详细介绍一下）。
+
+### 拒绝策略
+
+AbortPolicy：抛出异常拒绝
+
+CallerRunsPolicy：execute方法中运行所有任务
+
+DiscardPolicy：直接丢
+
+DiscardOldestPolicy：丢弃最早的任务
+
+### 阻塞队列
+
+容量为 `Integer.MAX_VALUE` 的 `LinkedBlockingQueue`（有界阻塞队列）：`FixedThreadPool` 和 `SingleThreadExecutor` 。
+
+SynchronousQueue`（同步队列）：`CachedThreadPool
+
+`DelayedWorkQueue`（延迟队列）：`ScheduledThreadPool` 和 `SingleThreadScheduledExecutor` 。
+
+`ArrayBlockingQueue`（有界阻塞队列）：底层由数组实现，容量一旦创建，就不能修改。
+
+### 异常处理
+
+简单来说：使用`execute()`时，未捕获异常导致线程终止，线程池创建新线程替代；使用`submit()`时，异常被封装在`Future`中，线程继续复用。
+
+### 线程池命名
+
+**1、利用 guava 的 `ThreadFactoryBuilder`**
+
+**2、自己实现 `ThreadFactory`。**
+
+
+
 ## ThreadLocal
+
+### 原理
+
+### 内存泄漏的原因
+
+### InheritableThreadLocal
+
+### TransmittableThreadLocal
 
 ## Future
 
+### CompletableFuture
+
+### CompletableFuture的异常处理
+
+### 自定义线程池
+
 ## AQS
+
+### 原理
+
+### Semaphore
+
+### CountDownLatch
+
+### CyclicBarrier
+
+## 虚拟线程
+
+java21发布
 
 # JVM
